@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Following</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/musify.css">
+</head>
+<body>
+<div class="container">
+    <div class="card list-container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/artist">Artist</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Following</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/people">People</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/account">Account</a>
+            </li>
+        </ul>
+
+        <br><br><center><h2>Following</h2></center><br>
+
+        <form class="form-group" method="POST">
+            <div class="col-xs-8">
+                <select class="form-control" id="sel1">
+                    <option>All</option>
+                    <option th:each="style : ${styleList}"
+                            th:text="${style}"></option>
+                </select>
+            </div>
+            <div class="col-xs-4">
+                <input type="submit" name="select" class="btn btn-lg btn-primary btn-block btn-signin" value="Filter"/>
+            </div>
+            <input type="hidden" id="style" name="style" value="All"/>
+        </form>
+
+        <script>
+                $(document).on('change', '#sel1', function() {
+                    document.getElementById('style').value=$('#sel1').val();
+                });
+            </script>
+
+        <br><br>
+
+        <table class="table table-responsive">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Year</th>
+                <th scope="col">Subscribers</th>
+                <th scope="col">Related artist</th>
+                <th scope="col">&nbsp</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="artist : ${artistList}">
+                <td th:text="${artist.id}">
+                <td th:text="${artist.name}">
+                <td th:text="${artist.year}">
+                <td th:text="${artist.people.size()}">
+                <td>boton</td>
+            </tr>
+            </tbody>
+        </table>
+        <label>Results: <span th:text="${#lists.size(artistList)}"/></label>
+        <br><br>
+        <button class="btn btn-lg btn-primary btn-block btn-signin" onclick="window.location='/'">Log out</button>
+    </div>
+</div>
+<script>
+        $(document).ready(function() {
+            $('#sel1 option:contains("[[${selectedStyle}]]")').prop('selected', true);
+        });
+    </script>
+
+</body>

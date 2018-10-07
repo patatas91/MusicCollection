@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/musify.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="card card-container">
+        <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
+        <img id="profile-img" class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" />
+        <p id="profile-name" class="profile-name-card"></p>
+        <form th:action="@{/login}" class="form-signin" method="post">
+
+          <input name="username" type="name" id="username" class="form-control" placeholder="Name" required autofocus><br>
+          <input name="password" type="password" id="password" class="form-control" placeholder="Password" required><br>
+
+          <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" value="Sing In">Sign in</button>
+
+        </form><!-- /form -->
+        <button class="btn btn-lg btn-primary btn-block btn-signup" onclick="window.location='singup'">Sign up!</button>
+      </div><!-- /card-container -->
+    </div><!-- /container -->
+  <div th:replace="fragments/footer :: footer"/>
+  </body>
+</html>

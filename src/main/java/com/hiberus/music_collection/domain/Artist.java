@@ -1,21 +1,48 @@
 package com.hiberus.music_collection.domain;
 
-import java.util.List;
 
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity(name = "artist")
+@Table(name = "artist")
 public class Artist {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(notes = "The database generated artist id")
     private long id;
-    private String name;
-    private Integer year;
-    /*private List<Style> styles;
-    private List<People> people;
-    private List<Artist> related;*/
 
-    public Artist(long id, String name, Integer year) {
-        this.id = id;
-        this.name = name;
-        this.year = year;
-    }
+    @Column(name = "name")
+    @ApiModelProperty(notes = "The artist name", required = true)
+    private String name;
+
+    @Column(name = "year")
+    @ApiModelProperty(notes = "The artist year", required = true)
+    private Integer year;
+
+    @ManyToMany
+    @JoinTable(
+            name = "artist_style",
+            joinColumns = { @JoinColumn(name = "artist_id", referencedColumnName = "id") },
+            inverseJoinColumns = { @JoinColumn(name = "style_id", referencedColumnName = "id")})
+    private Set<Style> styles;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "artist_person",
+            joinColumns = { @JoinColumn(name = "artist_id", referencedColumnName = "id") },
+            inverseJoinColumns = { @JoinColumn(name = "person_id", referencedColumnName = "id")})
+    private Set<Person> people;
+
+    @ManyToMany
+    @JoinTable(
+            name = "artist_related",
+            joinColumns = { @JoinColumn(name = "artist_id", referencedColumnName = "id") },
+            inverseJoinColumns = { @JoinColumn(name = "related_id", referencedColumnName = "id")})
+    private Set<Artist> related;
 
     public long getId() {
         return id;
@@ -42,27 +69,28 @@ public class Artist {
     }
 
 
-    /*public List<Style> getStyles() {
+    public Set<Style> getStyles() {
         return styles;
     }
 
-    public void setStyles(List<Style> styles) {
+    public void setStyles(Set<Style> styles) {
         this.styles = styles;
     }
 
-    public List<People> getPeople() {
+    public Set<Person> getPeople() {
         return people;
     }
 
-    public void setPeople(List<People> people) {
+    public void setPeople(Set<Person> people) {
         this.people = people;
     }
 
-    public List<Artist> getRelated() {
+    public Set<Artist> getRelated() {
         return related;
     }
 
-    public void setRelated(List<Artist> related) {
+    public void setRelated(Set<Artist> related) {
         this.related = related;
-    }*/
+    }
+
 }

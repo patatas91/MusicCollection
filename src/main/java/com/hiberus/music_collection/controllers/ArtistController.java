@@ -30,7 +30,7 @@ public class ArtistController {
     @RequestMapping(method = RequestMethod.GET)
     public String showHello(Model model) {
         model.addAttribute("styleList", getStylesList());
-        model.addAttribute("artistList", getArtistList());
+        model.addAttribute("artistList", getArtistListNotFollowing());
         model.addAttribute("selectedStyle", style);
         return "artist";
     }
@@ -40,11 +40,25 @@ public class ArtistController {
                               @RequestParam(value = "style") String styleSeleccionado) {
         this.style = styleSeleccionado;
         model.addAttribute("styleList", getStylesList());
-        model.addAttribute("artistList", getArtistList());
+        model.addAttribute("artistList", getArtistListNotFollowing());
         model.addAttribute("selectedStyle", style);
         return "artist";
     }
 
+    @RequestMapping(method = RequestMethod.POST, params = {"follow"})
+    public String followArtist(Model model, HttpServletRequest request,
+                              @RequestParam(value = "seleccionado") String idSeleccionado,
+                               @RequestParam(value = "indexSel") Integer index) {
+        String[] array = idSeleccionado.split(",");
+        Long idArtist = new Long(array[index]);
+
+        artistService.follow(idArtist);
+
+        model.addAttribute("styleList", getStylesList());
+        model.addAttribute("artistList", getArtistListNotFollowing());
+        model.addAttribute("selectedStyle", style);
+        return "artist";
+    }
 
     private List<Style> getStylesList() {
         return styleService.getAllStyle();
@@ -52,6 +66,14 @@ public class ArtistController {
 
     private List<Artist> getArtistList() {
         return artistService.getAllArtistByStyle(style);
+    }
+
+    private List<Artist> getArtistListNotFollowing() {
+        return artistService.getAllArtistByStyleNotFollowing(style);
+    }
+
+    private List<String> getRelated(Long id) {
+        return artistService.getRelated(id);
     }
 
 

@@ -45,4 +45,9 @@ public class PersonDao {
             return false;
         }
     }
+
+    public Person getPersonByName(String name) {
+        TypedQuery<Person> lQuery = entityManager.createQuery("select s from person s where upper(s.name) like upper('" + name + "')", Person.class);
+        return lQuery.getResultList().get(0);
+    }
 }

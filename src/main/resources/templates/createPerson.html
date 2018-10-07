@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create person</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/musify.css">
+</head>
+<body>
+<div class="container">
+    <div class="card list-container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/createArtist">Create artist</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Create person</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/related">Related artist</a>
+            </li>
+        </ul>
+
+        <br><center><h2>Admin</h2></center>
+        <center><h3>New person</h3></center><br>
+
+        <form class="form-group" method="POST">
+            <b><p th:if="${exists!=null}">Person already exists!</p></b>
+            <input name="name" type="text" id="inputName" class="form-control" placeholder="Name" required autofocus><br>
+            <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required><br>
+            <input name="years" type="text" id="inputAge" class="form-control" placeholder="Year" required><br>
+            <input class="btn btn-lg btn-primary btn-block btn-signup" name="createPerson" type="submit" value="Create!"/>
+        </form>
+
+        <br><br>
+        <a class="btn btn-lg btn-primary btn-block btn-signin" th:href="@{/logout}">Log Out</a>
+        <br>
+        <div th:replace="fragments/footer :: footer"/>
+    </div>
+</div>
+<script>
+        $(document).ready(function() {
+            $('#sel1 option:contains("[[${selectedStyle}]]")').prop('selected', true);
+        });
+    </script>
+</body>
+</html>

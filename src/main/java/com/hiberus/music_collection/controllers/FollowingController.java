@@ -29,7 +29,7 @@ public class FollowingController {
     @RequestMapping(method = RequestMethod.GET)
     public String showHello(Model model) {
         model.addAttribute("styleList", getStylesList());
-        model.addAttribute("artistList", getArtistList());
+        model.addAttribute("artistList", getArtistListFollowing());
         model.addAttribute("selectedStyle", style);
         return "following";
     }
@@ -39,11 +39,29 @@ public class FollowingController {
                               @RequestParam(value = "style") String styleSeleccionado) {
         this.style = styleSeleccionado;
         model.addAttribute("styleList", getStylesList());
-        model.addAttribute("artistList", getArtistList());
+        model.addAttribute("artistList", getArtistListFollowing());
         model.addAttribute("selectedStyle", style);
         return "following";
     }
 
+    @RequestMapping(method = RequestMethod.POST, params = {"unfollow"})
+    public String followArtist(Model model, HttpServletRequest request,
+                               @RequestParam(value = "seleccionado") String idSeleccionado,
+                               @RequestParam(value = "indexSel") Integer index) {
+        String[] array = idSeleccionado.split(",");
+        Long idArtist = new Long(array[index]);
+
+        artistService.unFollow(idArtist);
+
+        model.addAttribute("styleList", getStylesList());
+        model.addAttribute("artistList", getArtistListFollowing());
+        model.addAttribute("selectedStyle", style);
+        return "following";
+    }
+
+    private List<Artist> getArtistListFollowing() {
+        return artistService.getAllArtistByStyleFollowing(style);
+    }
 
     private List<Style> getStylesList() {
         return styleService.getAllStyle();

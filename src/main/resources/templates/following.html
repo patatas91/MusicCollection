@@ -20,14 +20,11 @@
                 <a class="nav-link active" href="#">Following</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/people">People</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="/account">Account</a>
             </li>
         </ul>
 
-        <br><br><center><h2>Following</h2></center><br>
+        <br><center><h2>Following</h2></center><br>
 
         <form class="form-group" method="POST">
             <div class="col-xs-8">
@@ -38,7 +35,7 @@
                 </select>
             </div>
             <div class="col-xs-4">
-                <input type="submit" name="select" class="btn btn-lg btn-primary btn-block btn-signin" value="Filter"/>
+                <input type="submit" name="select" class="btn btn-lg btn-primary btn-block btn-signin" value="Apply filter"/>
             </div>
             <input type="hidden" id="style" name="style" value="All"/>
         </form>
@@ -51,30 +48,50 @@
 
         <br><br>
 
-        <table class="table table-responsive">
-            <thead class="thead-light">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Year</th>
-                <th scope="col">Subscribers</th>
-                <th scope="col">Related artist</th>
-                <th scope="col">&nbsp</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="artist : ${artistList}">
-                <td th:text="${artist.id}">
-                <td th:text="${artist.name}">
-                <td th:text="${artist.year}">
-                <td th:text="${artist.people.size()}">
-                <td>boton</td>
-            </tr>
-            </tbody>
-        </table>
+        <form id="lista" method="POST">
+            <table class="table table-responsive">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Subscribers</th>
+                    <th scope="col">&nbsp</th>
+                    <th scope="col">Related artist</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="artist,itrStat : ${artistList}">
+                        <td th:text="${artist.id}">
+                        <td th:text="${artist.name}">
+                        <td th:text="${artist.year}">
+                        <td th:text="${artist.people.size()}">
+                        <td><input type="submit" name="unfollow" class="btn btn-danger btn-sm" value="unFollow" th:onclick="'setIndex(' + ${itrStat.index} + ')'"/></td>
+                        <input id="seleccionado" type="hidden" name="seleccionado" th:value="${artist.id}"/>
+                        <td><div class="popup btn btn-info btn-sm" th:onclick="'openPopUp' + ${itrStat.index} + '()'">Related
+                            <span class="popuptext" th:id="'myPopup' + ${itrStat.index}">List of related artist</p></span>
+                        </div></td>
+                        <script th:inline="javascript">
+                                function openPopUp[[${itrStat.index}]]() {
+                                    var popup = document.getElementById("myPopup[[${itrStat.index}]]");
+                                    popup.classList.toggle("show");
+                                }
+                        </script>
+                    </tr>
+                </tbody>
+            </table>
+            <input id="indexSel" type="hidden" name="indexSel" value=""/>
+            <script>
+                function setIndex(index) {
+                    document.getElementById('indexSel').value = index;
+                }
+            </script>
+        </form>
         <label>Results: <span th:text="${#lists.size(artistList)}"/></label>
         <br><br>
-        <button class="btn btn-lg btn-primary btn-block btn-signin" onclick="window.location='/'">Log out</button>
+        <a class="btn btn-lg btn-primary btn-block btn-signin" th:href="@{/logout}">Log Out</a>
+        <br>
+        <div th:replace="fragments/footer :: footer"/>
     </div>
 </div>
 <script>

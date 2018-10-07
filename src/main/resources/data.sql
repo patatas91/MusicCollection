@@ -29,3 +29,7 @@ INSERT INTO person VALUES (3, TRUE, 'paco', '12345', 1991);
 INSERT INTO artist_person VALUES(1, 1);
 INSERT INTO artist_person VALUES(1, 2);
 INSERT INTO artist_person VALUES(2, 3);
+
+--Relaciones artista-artista
+INSERT INTO artist_related VALUES(1, 2);
+INSERT INTO artist_related VALUES(2, 1);

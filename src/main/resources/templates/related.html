@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Related artist</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/musify.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card list-container">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="/createArtist">Create artist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/createPerson">Create person</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Related artist</a>
+                </li>
+            </ul>
+
+            <br><center><h2>Admin</h2></center>
+            <center><h3>Related artist</h3></center><br>
+
+            <form class="form-group" method="POST">
+                <div class="col-xs-8">
+                    <select class="form-control" id="sel1">
+                        <option>Select artist</option>
+                        <option th:each="artist : ${artistList}"
+                                th:text="${artist.name}"></option>
+                    </select>
+                </div>
+                <div class="col-xs-4">
+                    <input type="submit" name="select" class="btn btn-lg btn-primary btn-block btn-signin" value="Apply filter"/>
+                </div>
+                <input type="hidden" id="artist" name="artist" value="Select artist"/>
+            </form>
+
+            <script>
+                $(document).on('change', '#sel1', function() {
+                    document.getElementById('artist').value=$('#sel1').val();
+                });
+            </script>
+
+            <br><br>
+
+            <input type="hidden" id="tipoTabla" name="tipoTabla" th:value="${tipoTabla}"/>
+            <div id="tablaRelated">
+                <form id="listaRelated" method="POST">
+                    <table class="table table-responsive">
+                        <caption>Related artist</caption>
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Year</th>
+                                <th scope="col">Subscribers</th>
+                                <th scope="col">&nbsp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="artist,itrStat : ${artistListRelated}">
+                                <td th:text="${artist.id}">
+                                <td th:text="${artist.name}">
+                                <td th:text="${artist.year}">
+                                <td th:text="${artist.people.size()}">
+                                <td><input type="submit" name="unfollowRelated" class="btn btn-danger" value="&nbsp&nbsp-&nbsp&nbsp" th:onclick="'setIndex(' + ${itrStat.index} + ')'"/></td>
+                                <input type="hidden" name="seleccionado" th:value="${artist.id}"/>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <input id="indexSel" type="hidden" name="indexSel" value=""/>
+                    <script>
+                        function setIndex(index) {
+                            document.getElementById('indexSel').value = index;
+                        }
+                    </script>
+                </form>
+                <label><span th:if="${artistListRelated!=null}" th:text="'Results: ' + ${#lists.size(artistListRelated)}"/></label>
+            </div>
+
+            <br>
+
+            <div id="tablaNotRelated">
+                <form id="listaNotRelated" method="POST">
+                    <table class="table table-responsive">
+                        <caption>Not related artist</caption>
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Year</th>
+                            <th scope="col">Subscribers</th>
+                            <th scope="col">&nbsp</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="artist2,itrStat2 : ${artistListNotRelated}">
+                            <td th:text="${artist2.id}">
+                            <td th:text="${artist2.name}">
+                            <td th:text="${artist2.year}">
+                            <td th:text="${artist2.people.size()}">
+                            <td><input type="submit" name="followRelated" class="btn btn-success" value="&nbsp&nbsp+&nbsp&nbsp" th:onclick="'setIndex2(' + ${itrStat2.index} + ')'"/></td>
+                            <input type="hidden" name="seleccionado2" th:value="${artist2.id}"/>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <input id="indexSel2" type="hidden" name="indexSel2" value=""/>
+                    <script>
+                    function setIndex2(index) {
+                        document.getElementById('indexSel2').value = index;
+                    }
+                </script>
+                </form>
+                <label><span th:if="${artistListNotRelated!=null}" th:text="'Results: ' + ${#lists.size(artistListNotRelated)}"/></label>
+            </div>
+
+            <br><br>
+            <a class="btn btn-lg btn-primary btn-block btn-signin" th:href="@{/logout}">Log Out</a>
+            <br>
+            <div th:replace="fragments/footer :: footer"/>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#sel1 option:contains("[[${selectedArtist}]]")').prop('selected', true);
+            document.getElementById('artist').value=$('#sel1').val();
+
+            var x = document.getElementById("listaRelated");
+            var y = document.getElementById("listaNotRelated");
+            if (document.getElementById('artist').value=="Select artist") {
+                x.style.display = "none";
+                y.style.display = "none";
+            } else {
+                x.style.display = "block";
+                y.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

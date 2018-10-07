@@ -8,16 +8,22 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 
 @Configuration
+@EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -28,12 +34,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                     .antMatchers("/singup", "/css/**", "/h2-console/**").permitAll()
-                    //.antMatchers("/admin/**").hasAnyRole("ADMIN")
+                    .antMatchers("/createPerson**", "/createArtist**", "/related**").hasAnyRole("ADMIN")
                     //.antMatchers("/**").hasAnyRole("USER")
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
-                    .defaultSuccessUrl("/artist")
+                    .successHandler(myAuthenticationSuccessHandler())
                     .failureUrl("/error")
                     .loginPage("/login").permitAll()
                     .and()
@@ -41,12 +47,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutSuccessUrl("/login").permitAll();
     }
 
-    // create two users, admin and user
+    // crear usuario en memoria
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
         auth.inMemoryAuthentication()
-                .withUser("admin").password("{noop}password").roles("ADMIN");
+                .withUser("admin").password(passwordEncoder.encode("admin")).roles("ADMIN");
     }
 
     @Autowired
@@ -64,6 +70,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+        return new MySimpleUrlAuthenticationSuccessHandler();
+    }
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {

@@ -1,10 +1,9 @@
 # MusicCollection
 
-Aplicacion realizada con Spring Boot + Spring Security + Thymeleaf + H2
+Aplicacion realizada con **Spring Boot** + **Spring Security** + **Thymeleaf** + **H2**
 
 Esta aplicacion consiste en un gestor de artistas musicales. Para ello se ha optado por utilizar una base de datos embebida 
-(H2), la cual al iniciar la aplicacion se carga con una serie de datos de ejemplo (estilos musicales, usuarios para simular
-el contador de seguidores de artistas, ...). La aplicacion se divide en 2 secciones basicamente, la seccion a la que accederan los usuarios con rol usuario y a la que accedera el administrador, para ello contaremos con una pantalla de login:
+(H2), la cual al iniciar la aplicacion se carga con una serie de datos de ejemplo (estilos musicales, artistas de ejemplo  y algunos usuarios para simular el contador de seguidores de artistas). La aplicacion se divide en 2 secciones basicamente, la seccion a la que accederan los usuarios con rol usuario y a la que accedera el administrador, para ello contaremos con una pantalla de login:
 
 ![captura de pantalla 2018-10-07 a las 23 09 21](https://user-images.githubusercontent.com/16426967/46587012-c25b6c80-ca86-11e8-9a76-ab7cc087cbea.png)
 
@@ -17,7 +16,7 @@ Una vez tengamos nuestro usuario creado procederemos a introducirlo en el login 
 ## Seccion usuario 
 
 ### Artistas
-Se mostrara un listado de los artistas disponibles y que aun no sigamos. En esta pantalla ademas de poder seguir a los usuarios se pueden filtrar por los estilos musicales a los que correspondan. Se podra ver tambien a los artistas relacionados de cada artista mediante un popup (FALTA de terminar)
+Se mostrara un listado de los artistas disponibles y que aun no sigamos. En esta pantalla ademas de poder seguir a los usuarios se pueden filtrar por los estilos musicales a los que correspondan. Se podra ver tambien a los artistas relacionados de cada artista mediante un popup (*FALTA de terminar*)
 
 ![captura de pantalla 2018-10-07 a las 23 11 11](https://user-images.githubusercontent.com/16426967/46587014-c2f40300-ca86-11e8-8f80-5e739ff836b5.png)
 ![captura de pantalla 2018-10-07 a las 23 11 27](https://user-images.githubusercontent.com/16426967/46587015-c2f40300-ca86-11e8-91d6-82ba3a884da0.png)
@@ -33,7 +32,7 @@ Se mostraran los detalles de nuestra cuenta (nombre y permisos)
 ![captura de pantalla 2018-10-07 a las 23 11 56](https://user-images.githubusercontent.com/16426967/46587017-c2f40300-ca86-11e8-9c4f-13f5b74a5271.png)
 
 ## Seccion admin
-Para acceder a esta seccion se ha optado por definir un usuario que se creara internamente al lanzar la aplicacion (admin / admin) que actuara como unico administrador de la plataforma.
+Para acceder a esta seccion se ha optado por definir un usuario que se creara internamente al lanzar la aplicacion (`admin` / `admin`) que actuara como unico administrador de la plataforma.
 
 ![captura de pantalla 2018-10-07 a las 23 23 29](https://user-images.githubusercontent.com/16426967/46587102-0ac75a00-ca88-11e8-80e2-1daa132d3840.png)
 
@@ -66,4 +65,4 @@ pasandole en el body un JSON con la informacion de la persona.
 
 ![captura de pantalla 2018-10-07 a las 23 21 47](https://user-images.githubusercontent.com/16426967/46587089-d18eea00-ca87-11e8-9a07-c97cd696eac1.png)
 
-Se ha documentado esta API mediante Swagger, añadiendo la UI del propio Swagger (FALTA de configurar)
+Se ha documentado esta API mediante Swagger, añadiendo la UI del propio Swagger (*FALTA de configurar*)
